@@ -3,10 +3,12 @@ from sklearn.model_selection import train_test_split
 from src.shared.config import POLLUTANTS, METEOROLOGICAL, TARGET_COLUMN
 from src.infrastructure.data_loader import load_air_quality_data
 from src.use_cases.data_cleaning import preprocess_pipeline
-from src.use_cases.feature_engineering import calculate_aqi_index, encode_target, scale_features
+from src.use_cases.feature_engineering import calculate_aqi_index, encode_target
+from src.use_cases.temporal_analysis import extract_temporal_features
 from src.presentation.visualizer import (
     plot_univariate, plot_bivariate, 
-    plot_correlation_matrix, plot_aqi_by_category
+    plot_correlation_matrix, plot_aqi_by_category,
+    plot_temporal_trends, plot_country_comparison
 )
 from src.infrastructure.model_factory import run_all_models
 
@@ -17,6 +19,7 @@ def prepare_data():
     df = load_air_quality_data()
     df = calculate_aqi_index(df, POLLUTANTS)
     df = preprocess_pipeline(df, POLLUTANTS)
+    df = extract_temporal_features(df)
     df, _ = encode_target(df)
     return df
 
@@ -27,7 +30,8 @@ def perform_eda(df):
     plot_aqi_by_category(df)
     plot_univariate(df, 'PM2.5')
     plot_bivariate(df, 'Temperature', 'AQI')
-    plot_bivariate(df, 'Humidity', 'AQI')
+    plot_temporal_trends(df)
+    plot_country_comparison(df)
     plot_correlation_matrix(df, POLLUTANTS + METEOROLOGICAL + ['AQI'])
 
 def split_and_train(df):

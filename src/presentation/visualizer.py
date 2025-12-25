@@ -71,3 +71,33 @@ def plot_aqi_by_category(df):
                  x='AQI_Category', y='count', color='AQI_Category',
                  title="Interactive AQI Category Distribution")
     save_interactive_plot(fig, "aqi_distribution_interactive")
+
+def plot_temporal_trends(df):
+    """Generates monthly trend plots to identify cycles."""
+    monthly_avg = df.groupby('Month')[['AQI']].mean().reset_index()
+    
+    # Static
+    plt.figure(figsize=(12, 6))
+    sns.lineplot(data=monthly_avg, x='Month', y='AQI', marker='o')
+    plt.title("Monthly AQI Trend (Cycle Identification)")
+    plt.xticks(range(1, 13))
+    save_plot("temporal_trends.png")
+    
+    # Interactive
+    fig = px.line(monthly_avg, x='Month', y='AQI', title="Interactive Monthly AQI Trends")
+    save_interactive_plot(fig, "temporal_trends_interactive")
+
+def plot_country_comparison(df):
+    """Generates a comparison of AQI across countries."""
+    country_avg = df.groupby('Country')['AQI'].mean().sort_values(ascending=False).head(15).reset_index()
+    
+    # Static
+    plt.figure(figsize=(12, 8))
+    sns.barplot(data=country_avg, x='AQI', y='Country', palette='rocket', hue='Country', legend=False)
+    plt.title("Top 15 Countries by Average AQI (Comparative Analysis)")
+    save_plot("country_comparison.png")
+    
+    # Interactive
+    fig = px.bar(country_avg, x='AQI', y='Country', orientation='h', color='AQI',
+                 title="Interactive Comparative Analysis: Top 15 Countries by AQI")
+    save_interactive_plot(fig, "country_comparison_interactive")
