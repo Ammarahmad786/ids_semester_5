@@ -9,9 +9,11 @@ from src.use_cases.data_cleaning import preprocess_pipeline
 from src.use_cases.feature_engineering import calculate_aqi_index, encode_target
 from src.use_cases.temporal_analysis import extract_temporal_features
 from src.presentation.visualizer import (
-    plot_univariate, plot_bivariate, 
-    plot_correlation_matrix, plot_aqi_by_category,
-    plot_temporal_trends, plot_country_comparison
+    plot_univariate, plot_bivariate, plot_all_univariate, plot_all_boxplots,
+    plot_all_bivariate_vs_aqi, plot_correlation_matrix, plot_aqi_by_category,
+    plot_temporal_trends, plot_country_comparison, plot_pollutant_temporal_trends,
+    plot_pollutant_by_country, plot_aqi_vs_all_pollutants, plot_pairplot,
+    plot_model_comparison, plot_heatmap_pollutants_by_month
 )
 from src.infrastructure.model_factory import get_models, train_and_evaluate, save_model
 
@@ -28,14 +30,42 @@ def prepare_data():
 
 def perform_eda(df):
     """
-    Runs EDA and saves plots (Static and Interactive).
+    Runs comprehensive EDA and saves all plots.
     """
+    pollutants = config.POLLUTANTS
+    meteorological = config.METEOROLOGICAL
+    
+    print("  [1/10] AQI Category Distribution...")
     plot_aqi_by_category(df)
-    plot_univariate(df, 'PM2.5')
-    plot_bivariate(df, 'Temperature', 'AQI')
+    
+    print("  [2/10] Univariate Analysis (All Pollutants)...")
+    plot_all_univariate(df, pollutants)
+    
+    print("  [3/10] Boxplots for Outlier Visualization...")
+    plot_all_boxplots(df, pollutants)
+    
+    print("  [4/10] Bivariate Analysis (All Pollutants vs AQI)...")
+    plot_all_bivariate_vs_aqi(df, pollutants + meteorological)
+    
+    print("  [5/10] Combined Pollutants vs AQI Plot...")
+    plot_aqi_vs_all_pollutants(df, pollutants)
+    
+    print("  [6/10] Correlation Matrix...")
+    plot_correlation_matrix(df, pollutants + meteorological + ['AQI'])
+    
+    print("  [7/10] Temporal Trends (Monthly AQI)...")
     plot_temporal_trends(df)
+    
+    print("  [8/10] Pollutant Monthly Trends (Cycle Identification)...")
+    plot_pollutant_temporal_trends(df, pollutants)
+    
+    print("  [9/10] Pollutant Heatmap by Month...")
+    plot_heatmap_pollutants_by_month(df, pollutants)
+    
+    print("  [10/10] Country Comparison...")
     plot_country_comparison(df)
-    plot_correlation_matrix(df, config.POLLUTANTS + config.METEOROLOGICAL + ['AQI'])
+    for pol in pollutants[:3]:  # Top 3 pollutants
+        plot_pollutant_by_country(df, pol)
 
 def generate_technical_report(df, metrics_df):
     """
@@ -159,9 +189,16 @@ def main():
         metrics_list.append(row)
     
     results_df = pd.DataFrame(metrics_list)
-    results_df = results_df.sort_values(by="R2", ascending=False)
+    results_df = results_df.sort_values(by="R-Squared Score", ascending=False)
     
-    print("\n" + "-"*40)
+    # Save CSV report
+    report_path = f"{config.RESULTS_DIR}/model_performance_report.csv"
+    results_df.to_csv(report_path, index=False)
+    
+    # Generate model comparison charts
+    plot_model_comparison(report_path)
+    
+    print("\\n" + "-"*40)
     print("SECTION 4: COMPARATIVE ANALYSIS REPORT")
     print("-"*40)
     print(results_df.to_string(index=False))
@@ -172,8 +209,9 @@ def main():
     print("-"*80)
     print(f"[*] DATA CLEANING REPORT: Completed")
     print(f"[*] TECHNICAL REPORT SAVED: {config.TECHNICAL_REPORT_PATH}")
-    print(f"[*] CSV PERFORMANCE REPORT: {config.RESULTS_DIR}/model_performance_report.csv") # Adjusted path
-    print("="*80 + "\n")
+    print(f"[*] CSV PERFORMANCE REPORT: {report_path}")
+    print(f"[*] MODEL COMPARISON CHARTS: results/plots/model_comparison_*.png")
+    print("="*80 + "\\n")
 
 if __name__ == "__main__":
     main()

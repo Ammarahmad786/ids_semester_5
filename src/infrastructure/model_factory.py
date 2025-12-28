@@ -74,7 +74,12 @@ def train_and_evaluate(model, x_train, x_test, y_train, y_test):
     mae = mean_absolute_error(y_test, predictions)
     rmse = np.sqrt(mse)
     r2 = r2_score(y_test, predictions)
-    return model, {"MSE": mse, "MAE": mae, "RMSE": rmse, "R2": r2}
+    return model, {
+        "Mean Squared Error": mse, 
+        "Mean Absolute Error": mae, 
+        "Root Mean Squared Error": rmse, 
+        "R-Squared Score": r2
+    }
 
 import os
 from src.shared import config

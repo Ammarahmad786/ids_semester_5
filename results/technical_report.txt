@@ -9,23 +9,23 @@
 - Features: City, Country, Date, PM2.5, PM10, NO2, SO2, CO, O3, Temperature, Humidity, Wind Speed, AQI, Month, DayOfWeek, Season, AQI_Category, AQI_Category_Encoded
 
 2. MODEL PERFORMANCE SUMMARY
-               Model          MSE          MAE         RMSE       R2
-    LinearRegression 2.205586e-27 3.986322e-14 4.696366e-14 1.000000
-               Huber 1.485224e-23 3.142729e-12 3.853860e-12 1.000000
-               Ridge 3.554905e-06 1.509062e-03 1.885446e-03 1.000000
-   PassiveAggressive 8.945236e-04 2.401904e-02 2.990859e-02 0.999996
-               MLPNN 3.948358e-03 3.759987e-02 6.283596e-02 0.999984
-HistGradientBoosting 1.289700e+00 9.033776e-01 1.135649e+00 0.994652
-    GradientBoosting 1.602177e+00 1.009707e+00 1.265771e+00 0.993356
-                 SVR 2.062660e+00 7.444315e-01 1.436196e+00 0.991447
-          ExtraTrees 2.837974e+00 1.317014e+00 1.684629e+00 0.988232
-        RandomForest 4.768023e+00 1.742630e+00 2.183580e+00 0.980228
-               Lasso 4.934710e+00 1.770003e+00 2.221421e+00 0.979537
-             Bagging 6.475536e+00 2.009015e+00 2.544707e+00 0.973148
-                 KNN 1.563699e+01 3.144024e+00 3.954363e+00 0.935158
-        DecisionTree 1.859165e+01 3.474534e+00 4.311804e+00 0.922906
-            AdaBoost 2.273660e+01 3.791619e+00 4.768292e+00 0.905718
-          ElasticNet 3.332370e+01 4.619094e+00 5.772669e+00 0.861816
+               Model  Mean Squared Error  Mean Absolute Error  Root Mean Squared Error  R-Squared Score
+    LinearRegression        2.205586e-27         3.986322e-14             4.696366e-14         1.000000
+               Huber        1.485224e-23         3.142729e-12             3.853860e-12         1.000000
+               Ridge        3.554905e-06         1.509062e-03             1.885446e-03         1.000000
+   PassiveAggressive        8.945236e-04         2.401904e-02             2.990859e-02         0.999996
+               MLPNN        3.948358e-03         3.759987e-02             6.283596e-02         0.999984
+HistGradientBoosting        1.289700e+00         9.033776e-01             1.135649e+00         0.994652
+    GradientBoosting        1.602177e+00         1.009707e+00             1.265771e+00         0.993356
+                 SVR        2.062660e+00         7.444315e-01             1.436196e+00         0.991447
+          ExtraTrees        2.837974e+00         1.317014e+00             1.684629e+00         0.988232
+        RandomForest        4.768023e+00         1.742630e+00             2.183580e+00         0.980228
+               Lasso        4.934710e+00         1.770003e+00             2.221421e+00         0.979537
+             Bagging        6.475536e+00         2.009015e+00             2.544707e+00         0.973148
+                 KNN        1.563699e+01         3.144024e+00             3.954363e+00         0.935158
+        DecisionTree        1.830674e+01         3.431610e+00             4.278638e+00         0.924087
+            AdaBoost        2.273660e+01         3.791619e+00             4.768292e+00         0.905718
+          ElasticNet        3.332370e+01         4.619094e+00             5.772669e+00         0.861816
 
 3. HEALTH IMPACTS OF POLLUTANTS
 - PM2.5 & PM10: Can penetrate deep into lungs; linked to heart disease and asthma.
