@@ -8,6 +8,7 @@ DATA_PATH = "data/global_air_quality_data_10000.csv"
 RESULTS_DIR = "results"
 PLOTS_DIR = f"{RESULTS_DIR}/plots"
 MODELS_DIR = f"{RESULTS_DIR}/models"
+TECHNICAL_REPORT_PATH = "results/technical_report.txt"
 
 # Column Definitions
 POLLUTANTS = ["PM2.5", "PM10", "NO2", "SO2", "CO", "O3"]
@@ -29,3 +30,6 @@ AQI_CATEGORIES = {
 # Model settings
 TRAIN_TEST_SPLIT_RATIO = 0.2
 RANDOM_SEED = 42
+# Execution Flags (for performance)
+FAST_MODE = False  # If True, trains fewer models and uses faster settings
+INCLUDE_INTERACTIVE_PLOTS = True # If True, generates plotly HTML files
